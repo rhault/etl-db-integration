@@ -1,1 +1,1 @@
-data, cardName, itemcode, itemname, nr_nota, nr_pedido, nr_parcela, dt_parcela, dt_pgto, vl_parcela, vl_recebido, vl_item_total, vl_base, pr_comissao, vl_comissao
+data, cardName, itemcode, itemname, nr_nota, nr_pedido, nr_parcela, dt_parcela, dt_pgto, vl_parcela, vl_recebido, vl_item_total, vl_base, pr_comissao, vl_comissao, updated

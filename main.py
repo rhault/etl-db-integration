@@ -1,4 +1,5 @@
 from PyPDF2 import PdfReader
+from datetime import datetime
 import re
 import csv
 
@@ -12,6 +13,7 @@ def extractTextPdf(pdfPath):
   return extractedText
 
 def processText(textLines):
+  updated = datetime.now()
   patterns = {
     'itemProduct': r'^\d{2}\.\d{3}$',
     'date': r'^\d{1}-\d{4}$',
@@ -35,10 +37,10 @@ def processText(textLines):
       joinProductName = []
       dateDoc = ''
 
+      #Join the names of products and customers
       for index, text in enumerate(listLineText):
         indexDate = indexes.get('date', {}).get('index', index)
         indexItemProduct = indexes.get('itemProduct', {})
-
         if index < indexes.get('docNum', {}).get('index', index):
           joinClientName.append(text)
         elif\
@@ -52,6 +54,7 @@ def processText(textLines):
       productName = ' '.join(joinProductName)
       listLineText = listLineText[indexDate:indexDate + 12] #I need the elements that are 12 positions after the date
       listLineText[0:1] = [dateDoc,clientName, indexItemProduct.get('value', ''), productName]
+      listLineText.append(updated)
 
     processedText.append(listLineText)
     
@@ -72,8 +75,8 @@ def main():
         processedData = processText(text)
         for data in processedData:
           if len(data) == len(fildnames):
-            for index, item in enumerate(fildnames):
-              rows = ''
+            row = dict(zip(fildnames, data))
+            csvWrite.writerow(row)
 
 if __name__ == '__main__':
   main()
